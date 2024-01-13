@@ -2,11 +2,7 @@
   "functions": {
     "api/server.js": {
       "memory": 1024,
-      "includeFiles": "db.json",
-      "runtime": "vercel/node@3.0.16"
-    },
-    "main.py": {
-      "runtime": "vercel/python@4.1.0"
+      "includeFiles": "db.json"
     }
   },
   "rewrites": [
