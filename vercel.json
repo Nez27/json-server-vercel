@@ -6,12 +6,12 @@
   },
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "api/server.js"
-    },
-    {
       "source": "/api/flask/(.*)",
       "destination": "api/main.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "api/server.js"
     }
   ]
 }
