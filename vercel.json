@@ -6,7 +6,7 @@
   },
   "rewrites": [
     {
-      "source": "/api/express/(.*)",
+      "source": "/(.*)",
       "destination": "api/server.js"
     },
     {
