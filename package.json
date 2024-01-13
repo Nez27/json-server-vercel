@@ -5,7 +5,7 @@
   "type": "module",
   "main": "api/server.js",
   "scripts": {
-    "start-flask": "python main.py",
+    "start-flask": "python api/main.py",
     "start-express": "nodemon api/server.js",
     "start":"npm run start-proxy & npm run start-flask & npm run start-express"
   },
