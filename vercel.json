@@ -1,18 +1,12 @@
 {
-  "builds": [
-    {
-      "src": "index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "main.py",
-      "use": "@vercel/python"
-    }
-  ],
   "functions": {
     "api/server.js": {
       "memory": 1024,
-      "includeFiles": "db.json"
+      "includeFiles": "db.json",
+      "runtime": "@vercel/node"
+    },
+    "main.py": {
+      "runtime": "@vercel/python"
     }
   },
   "rewrites": [
