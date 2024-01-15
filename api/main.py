@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from pytube import YouTube
 from flask_cors import CORS
-import youtube_dl
 
 app = Flask(__name__)
 CORS(app, origins='*')
@@ -18,36 +17,24 @@ def convert():
         video_url = f'https://www.youtube.com/watch?v={youtubeId}'
         yt = YouTube(video_url)
 
-        options = {
-            'format': 'bestaudio/best',
-            'extractaudio': True,  # only keep the audio
-            'audioformat': 'mp3',  # convert to mp3
-            'outtmpl': '%(id)s',  # save file as video ID
-            'noplaylist': True,  # only download single song, not playlist
-        }
+        # Get the audio stream URL
+        audio_stream_url = yt.streams.filter(only_audio=True).first().url
 
-        with youtube_dl.YoutubeDL(options) as ydl:
-            info_dict = ydl.extract_info(video_url, download=False)
-            audio_url_youtubedl = info_dict['formats'][0]['url']
+        # Get all audio stream URLs
+        all_audio_stream_urls = [stream.url for stream in yt.streams.filter(only_audio=True)]
 
-            #only audio
-            audio_url_pytube = yt.streams.get_audio_only().url
-            # Get captions
-            captions = yt.captions['en'] if 'en' in yt.captions else None
-            captions_srt = captions.generate_srt_captions() if captions else "No captions available"
-            captions_vtt = captions.generate_vtt_captions() if captions else "No captions available"
+        # Get video stream URL
+        video_stream_url = yt.stream.filter(file_extension='mp4').first().url
 
-            # Return the audio stream URL and captions
-            return jsonify({
-                "status": True, 
-                "audio_url_youtubedl": audio_url_youtubedl,
-                "audio_url_pytube": audio_url_pytube,
-                "captions_srt": captions_srt,
-                "captions_vtt": captions_vtt
-            })
+        # Return the audio stream URL and captions
+        return jsonify({
+            "status": True, 
+            "audio_stream_url": audio_stream_url,
+            "all_audio_stream_urls": all_audio_stream_urls,
+            "video_stream_url": video_stream_url
+        })
 
     except Exception as e:
         return jsonify({"status": False, "error": str(e)})
-
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8888)
