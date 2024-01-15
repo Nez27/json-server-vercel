@@ -24,7 +24,7 @@ def convert():
         all_audio_stream_urls = [stream.url for stream in yt.streams.filter(only_audio=True)]
 
         # Get video stream URL
-        video_stream_url = yt.stream.filter(file_extension='mp4').first().url
+        video_stream_url = yt.streams.filter(file_extension='mp4').first().url
 
         # Return the audio stream URL and captions
         return jsonify({
